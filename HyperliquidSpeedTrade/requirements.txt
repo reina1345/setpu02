@@ -1,0 +1,8 @@
+customtkinter>=5.2.0
+hyperliquid-python-sdk>=0.5.0
+websockets>=12.0
+python-dotenv>=1.0.0
+eth-account>=0.11.0
+# ckzgはオプショナルな依存関係（C++コンパイラが必要）
+# Windowsでビルドエラーが出る場合は、インストールスキップしても基本機能は動作します
+
