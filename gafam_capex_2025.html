@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAFAM 設備投資分析 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .summary h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .summary .total {
+            font-size: 3em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .company-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 5px solid;
+        }
+
+        .company-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .company-card.google {
+            border-left-color: #4285F4;
+        }
+
+        .company-card.apple {
+            border-left-color: #A8BCC8;
+        }
+
+        .company-card.meta {
+            border-left-color: #1877F2;
+        }
+
+        .company-card.amazon {
+            border-left-color: #FF9900;
+        }
+
+        .company-card.microsoft {
+            border-left-color: #00A4EF;
+        }
+
+        .company-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .capex-amount {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .capex-jpy {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .trend {
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .trend.up {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .trend.significant {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #ddd;
+            transition: background 0.3s;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .chart-container {
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .chart-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .bar-chart {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .bar-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .bar-wrapper {
+            position: relative;
+            height: 40px;
+            background: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            transition: width 1s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 15px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .info-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .info-section h2 {
+            margin-bottom: 20px;
+        }
+
+        .info-section ul {
+            list-style-position: inside;
+            line-height: 1.8;
+        }
+
+        .info-section li {
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            background: #333;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .data-source {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 GAFAM 設備投資分析</h1>
+            <p class="subtitle">2025年 Capital Expenditure (CapEx) レポート</p>
+        </header>
+
+        <div class="content">
+            <div class="summary">
+                <h2>総設備投資額</h2>
+                <div class="total">$3,725億ドル</div>
+                <p style="font-size: 1.2em; margin-top: 10px;">約56兆円（1ドル=150円換算）</p>
+            </div>
+
+            <div class="companies-grid">
+                <div class="company-card google">
+                    <div class="company-name">🔵 Alphabet (Google)</div>
+                    <div class="capex-amount">$910-930億</div>
+                    <div class="capex-jpy">約13.7-14.0兆円</div>
+                    <div class="trend up">前四半期: $850億から増加</div>
+                    <p style="margin-top: 10px; color: #666;">AI・データセンター拡充に注力</p>
+                </div>
+
+                <div class="company-card microsoft">
+                    <div class="company-name">🔷 Microsoft</div>
+                    <div class="capex-amount">$800億</div>
+                    <div class="capex-jpy">約12兆円</div>
+                    <div class="trend significant">AIインフラ強化</div>
+                    <p style="margin-top: 10px; color: #666;">Azure・AI開発への集中投資</p>
+                </div>
+
+                <div class="company-card amazon">
+                    <div class="company-name">🟠 Amazon</div>
+                    <div class="capex-amount">$1,050億</div>
+                    <div class="capex-jpy">約15.8兆円</div>
+                    <div class="trend up">GAFAM最大の設備投資</div>
+                    <p style="margin-top: 10px; color: #666;">AWS・物流ネットワーク拡張</p>
+                </div>
+
+                <div class="company-card meta">
+                    <div class="company-name">💙 Meta (Facebook)</div>
+                    <div class="capex-amount">$640-720億</div>
+                    <div class="capex-jpy">約9.6-10.8兆円</div>
+                    <div class="trend significant">予想の23%上回る</div>
+                    <p style="margin-top: 10px; color: #666;">メタバース・AI開発加速</p>
+                </div>
+
+                <div class="company-card apple">
+                    <div class="company-name">🍎 Apple</div>
+                    <div class="capex-amount">$130億（推定）</div>
+                    <div class="capex-jpy">約2兆円</div>
+                    <div class="trend">製造設備・R&D中心</div>
+                    <p style="margin-top: 10px; color: #666;">自動運転EV計画進行中</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h2>設備投資額比較グラフ（単位: 億ドル）</h2>
+                <div class="bar-chart">
+                    <div class="bar-label">Amazon</div>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width: 100%;">1,050億</div>
+                    </div>
+                </div>
+                <div class="bar-chart">
+                    <div class="bar-label">Google</div>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width: 89%;">910億</div>
+                    </div>
+                </div>
+                <div class="bar-chart">
+                    <div class="bar-label">Microsoft</div>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width: 76%;">800億</div>
+                    </div>
+                </div>
+                <div class="bar-chart">
+                    <div class="bar-label">Meta</div>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width: 69%;">680億</div>
+                    </div>
+                </div>
+                <div class="bar-chart">
+                    <div class="bar-label">Apple</div>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width: 12%;">130億</div>
+                    </div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>企業名</th>
+                        <th>設備投資額（億ドル）</th>
+                        <th>日本円換算（兆円）</th>
+                        <th>主要用途</th>
+                        <th>トレンド</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Amazon</strong></td>
+                        <td>1,050</td>
+                        <td>15.8</td>
+                        <td>AWS、物流</td>
+                        <td>📈 増加</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alphabet (Google)</strong></td>
+                        <td>920</td>
+                        <td>13.8</td>
+                        <td>データセンター</td>
+                        <td>📈 大幅増加</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Microsoft</strong></td>
+                        <td>800</td>
+                        <td>12.0</td>
+                        <td>Azure、AI</td>
+                        <td>📈 増加</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Meta</strong></td>
+                        <td>680</td>
+                        <td>10.2</td>
+                        <td>メタバース、AI</td>
+                        <td>📈 予想超過</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Apple</strong></td>
+                        <td>130</td>
+                        <td>2.0</td>
+                        <td>製造、R&D</td>
+                        <td>➡️ 維持</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-section">
+                <h2>💰 重要なポイント</h2>
+                <ul>
+                    <li><strong>AI投資の集中</strong>: GAFAM全体でAIインフラ・データセンターへの投資が急拡大</li>
+                    <li><strong>Amazonが最大</strong>: GAFAM中最多の$1,050億（約15.8兆円）</li>
+                    <li><strong>Googleの急増</strong>: 前四半期から設備投資見通しを引き上げ</li>
+                    <li><strong>総額3,725億ドル</strong>: 世界経済への影響は計り知れない規模</li>
+                    <li><strong>2026年も拡大予想</strong>: 特にGoogleは2026年に大幅増加を見込む</li>
+                </ul>
+            </div>
+
+            <div class="data-source">
+                <strong>データソース:</strong> 各社の決算報告書（2024年Q4 / 2025年Q1）、市場分析レポート<br>
+                <strong>換算レート:</strong> 1ドル = 150円（2025年1月時点）<br>
+                <strong>更新日:</strong> 2025年1月
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 GAFAM CapEx Analysis | Created for Financial Research</p>
+        </div>
+    </div>
+
+    <script>
+        // スクロールアニメーション
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.company-card, .chart-container, .info-section').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // グラフのバーアニメーション
+        setTimeout(() => {
+            document.querySelectorAll('.bar').forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        }, 500);
+    </script>
+</body>
+</html>
