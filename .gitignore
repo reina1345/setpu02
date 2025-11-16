@@ -3,7 +3,7 @@
 Thumbs.db
 
 # IDE
-.vscode/mcp.json
+.vscode/
 .idea/
 *.swp
 *.swo
@@ -34,3 +34,22 @@ env/
 __pycache__/
 *.pyc
 
+# Security - 機密情報ファイル
+# Google Drive認証情報
+google-drive-credentials.json
+google-drive-token.json
+*-credentials.json
+*-token.json
+*credentials*.json
+*token*.json
+
+# MCP設定ファイル（APIキーが含まれる可能性あり）
+mcp.json
+**/.cursor/mcp.json
+**/.vscode/mcp.json
+
+# API キーやシークレット
+*secret*.json
+*api*.key
+*.pem
+*.key
